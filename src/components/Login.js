@@ -2,12 +2,51 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { Redirect } from "react-router-dom";
 
-const Login = () => {
-  const onFinish = values => {
-    console.log('Received values of form: ', values);
-  };
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.Username = this.Username.bind(this);  
+    this.Password = this.Password.bind(this);  
+    this.handleSubmit = this.handleSubmit.bind(this);
 
+    this.state = {  
+      username: '',
+      password: ''
+    }  
+  }  
+  Username(event) {  
+    this.setState({ Username: event.target.value })  
+  }  
+  Password(event) {  
+    this.setState({ Password: event.target.value })  
+  }  
+
+  handleSubmit(event) {
+    axios({
+      method: 'post',
+      url: 'http://localhost:5321/user/login',
+      data: {
+        username: this.state.Username,
+        password: this.state.Password
+      }
+    }).then(response => {
+          alert('Success');
+          this.setState({ redirect: true})
+      }).catch(error => {alert('Fail');});
+    this.setState({
+      username: '',
+      password: ''
+    })
+  }
+  
+  render() {
+  const {redirect} = this.state;
+  if (redirect) {
+    return <Redirect to='/task'/>
+  }
   return (
     <Form
       name="normal_login"
@@ -15,7 +54,7 @@ const Login = () => {
       initialValues={{
         remember: true,
       }}
-      onFinish={onFinish}
+      onFinish={this.handleSubmit}
     >
       <Form.Item
         name="username"
@@ -26,7 +65,10 @@ const Login = () => {
           },
         ]}
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} 
+               placeholder="Username" 
+               value={this.state.value} 
+               onChange={this.Username}/>
       </Form.Item>
       <Form.Item
         name="password"
@@ -41,6 +83,8 @@ const Login = () => {
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
+          value={this.state.value} 
+          onChange={this.Password}
         />
       </Form.Item>
       <Form.Item>
@@ -61,5 +105,5 @@ const Login = () => {
       </Form.Item>
     </Form>
   );
-};
+}};
 export default Login;
