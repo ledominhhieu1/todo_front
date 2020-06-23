@@ -4,13 +4,67 @@ import 'antd/dist/antd.css';
 import '../styles/overwrite.css';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { render } from 'node-sass';
+import axios from 'axios';
+import { Redirect } from "react-router-dom";
 
-const Register = () => {
-  const onFinish = values => {
-    console.log('Received values of form: ', values);
-  };
+class Register extends React.Component {
+  constructor(props) {
+    super(props);
+    this.Username = this.Username.bind(this);  
+    this.Password = this.Password.bind(this);  
+    this.Fullname = this.Fullname.bind(this);
+    this.Email = this.Email.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {  
+      username: '',
+      password: ''
+    }  
+  }  
+
+  Username(event) {  
+    this.setState({ Username: event.target.value })  
+  }  
+
+  Password(event) {  
+    this.setState({ Password: event.target.value })  
+  }  
+
+  Fullname(event) {  
+    this.setState({ Fullname: event.target.value })  
+  }  
+
+  Email(event) {  
+    this.setState({ Email: event.target.value })  
+  }  
+
+  handleSubmit(event) {
+    axios({
+      method: 'post',
+      url: 'http://localhost:5321/user/register',
+      data: {
+        username: this.state.Username,
+        password: this.state.Password,
+        fullname: this.state.Fullname,
+        email: this.state.email
+      }
+    }).then(response => {
+          alert('Success');
+          this.setState({ redirect: true})
+      }).catch(error => {alert('Fail');});
+    this.setState({
+      username: '',
+      password: '',
+      fullname: '',
+      email: ''
+    })
+  }
   
+  render() {
+  const {redirect} = this.state;
+  if (redirect) {
+    return <Redirect to='/task'/>
+  }
   return (
     <Form
       name="normal_login"
@@ -18,7 +72,8 @@ const Register = () => {
       initialValues={{
         remember: true,
       }}
-      onFinish={onFinish}
+      // onFinish={onFinish}
+      onFinish={this.handleSubmit}
     >
       <Form.Item
         name="username"
@@ -29,7 +84,11 @@ const Register = () => {
           },
         ]}
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} 
+               placeholder="Username" 
+               value={this.state.value} 
+               onChange={this.Username}
+        />
       </Form.Item>
       <Form.Item
         name="password"
@@ -44,6 +103,8 @@ const Register = () => {
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
+          value={this.state.value} 
+          onChange={this.Password}
         />
       </Form.Item>
       <Form.Item
@@ -55,7 +116,10 @@ const Register = () => {
           },
         ]}
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Fullname" />
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Fullname" 
+                value={this.state.value} 
+                onChange={this.Fullname}
+        />
       </Form.Item>
       <Form.Item
         name="Email"
@@ -66,7 +130,10 @@ const Register = () => {
           },
         ]}
       >
-        <Input prefix={<MailOutlined className="site-form-item-icon" /> }   placeholder="Email" />
+        <Input prefix={<MailOutlined className="site-form-item-icon" /> }   placeholder="Email" 
+                value={this.state.value} 
+                onChange={this.Email}
+        />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
@@ -76,5 +143,6 @@ const Register = () => {
       </Form.Item>
     </Form>
   );
+}
 };
 export default Register;
