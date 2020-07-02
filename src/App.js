@@ -9,27 +9,22 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from "react-router-dom";
+import { PrivateRoute } from './PrivateRoute';
+import Task from './components/Task';
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/task">
-          <AppStateProvider>
-            <TodoDate />
-            <ItemList />
-          </AppStateProvider>
-        </Route>
-        <Route path="/login">
+        <PrivateRoute exact path="/task" component={Task}/>
+        <Route path="/login" component={Login}/>
+        <PrivateRoute  component={Register} path="/register" exact/>
+        <Route path="/" component={Login}/>
+        {/* <Route path="/">
           <Login />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/">
-          <Login />
-        </Route>
+        </Route> */}
       </Switch>
     </Router>
   );
