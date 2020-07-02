@@ -34,7 +34,10 @@ class Login extends React.Component {
       }
     }).then(response => {
           alert('Success');
+          localStorage.setItem('isAuth', response.data.token)
+          console.log(response)
           this.setState({ redirect: true})
+         
       }).catch(error => {alert('Fail');});
     this.setState({
       username: '',
