@@ -10,6 +10,9 @@ function TodoDate() {
 
   // useDateCheck();
   // useReminderNotification();
+  function handleLogOut() {
+		localStorage.clear();
+	}
   return (
     <div className={styles.date}>
       <div className={styles.calendar}>
@@ -19,7 +22,10 @@ function TodoDate() {
           <div className={styles.year}>{date.year}</div>
         </div>
       </div>
-      <div className="today">{date.weekday}</div>
+      <div className="today">
+        <p><a href="/login" onClick={handleLogOut}>Logout</a></p>
+        {date.weekday}
+      </div>
     </div>
   );
 }
