@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { loadState, saveState } from "./local-storage";
 import { format } from "date-fns";
+import axios from "axios"; 
 
 export const AppContext = createContext();
 
@@ -13,18 +14,17 @@ export function useAppReducer() {
 }
 
 export function useItems() {
-  const { items } = useAppState();
+  let { items } = useAppState();
+ 
+  const pending = items.filter(item => item.isCompleted === false);
+  // const paused = items.filter(item => item.status === "paused");
+  const completed = items.filter(item => item.isCompleted === true);
 
-  const pending = items.filter(item => item.status === "pending");
-  const paused = items.filter(item => item.status === "paused");
-  const completed = items.filter(item => item.status === "completed");
-
-  return { pending, paused, completed };
+  return { pending, completed };
 }
 
 const appStateReducer = (state, action) => {
   let nd = new Date();
-
   let currentDate = {
     day: format(nd, "dd"),
     dayDisplay: format(nd, "d"),
@@ -42,9 +42,9 @@ const appStateReducer = (state, action) => {
     }
     case "UPDATE_ITEM": {
       const newItems = state.items.map(i => {
-        if (i.key === action.item.key) {
+        if (i._id === action.item._id) {
           return Object.assign({}, i, {
-            status: action.item.status
+            isCompleted: action.item.isCompleted
           });
         }
         return i;
@@ -56,18 +56,18 @@ const appStateReducer = (state, action) => {
     case "DELETE_ITEM": {
       const newState = {
         ...state,
-        items: state.items.filter(item => item.key !== action.item.key)
+        items: state.items.filter(item => item._id !== action.item._id)
       };
       saveState(newState);
       return newState;
     }
     case "RESET_ALL": {
       const newItems = state.items
-        .filter(item => item.status !== "completed")
+        .filter(item => item.isCompleted !== true)
         .map(i => {
-          if (i.status === "paused") {
+          if (i.isCompleted === true) {
             return Object.assign({}, i, {
-              status: "pending"
+              isCompleted: false
             });
           }
           return i;
