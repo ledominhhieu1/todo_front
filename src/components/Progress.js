@@ -1,14 +1,15 @@
 import React from "react";
 import { useItems, useAppState } from "../AppContext";
-
 import styles from "./Progress.module.scss";
+
 
 // Progress bar for completed/paused todo items
 function Progress() {
   const totalAmount = useAppState().items.length;
-  const { paused, completed } = useItems();
+  const { pending, completed } = useItems();
   const completedAmount = completed.length;
-  const pausedAmount = paused.length;
+  const pausedAmount = pending.length;
+  console.log(completed.length);
 
   let completedPercentage = completedAmount / totalAmount;
   let pausedPercentage = pausedAmount / totalAmount + completedPercentage;
