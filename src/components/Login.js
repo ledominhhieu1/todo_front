@@ -33,11 +33,8 @@ class Login extends React.Component {
         password: this.state.Password
       }
     }).then(response => {
-          alert('Success');
           localStorage.setItem('isAuth', response.data.token)
-          console.log(response)
           this.setState({ redirect: true})
-         
       }).catch(error => {alert('Fail');});
     this.setState({
       username: '',
@@ -95,9 +92,9 @@ class Login extends React.Component {
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
-        <a className="login-form-forgot" href="">
+        {/* <a className="login-form-forgot" href="">
           Forgot password
-        </a>
+        </a> */}
       </Form.Item>
 
       <Form.Item>
