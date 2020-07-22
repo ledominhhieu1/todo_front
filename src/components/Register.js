@@ -70,7 +70,6 @@ class Register extends React.Component {
       name="normal_login"
       className="login-form"
       onFinish={this.handleSubmit}    
-      
     >
       <Form.Item
         name="username"

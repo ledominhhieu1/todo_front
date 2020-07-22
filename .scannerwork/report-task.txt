@@ -1,0 +1,6 @@
+projectKey=todo_front
+serverUrl=http://192.168.137.32
+serverVersion=8.4.0.35506
+dashboardUrl=http://192.168.137.32/dashboard?id=todo_front
+ceTaskId=AXNr8hFxIXR7Uo4Rtw7-
+ceTaskUrl=http://192.168.137.32/api/ce/task?id=AXNr8hFxIXR7Uo4Rtw7-
