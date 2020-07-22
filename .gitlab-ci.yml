@@ -1,0 +1,66 @@
+image: node:latest
+
+cache: &global_cache
+  key: todo-front
+  paths:
+    - node_modules/
+  policy: pull-push
+
+stages:
+  - install_dependencies
+  - quality
+  - build
+  # - deploy
+
+install_dependencies:
+  stage: install_dependencies
+  script:
+    - npm install
+  only:
+    refs:
+      - master
+    changes:
+      - package.json
+  tags: [shared]
+
+quality:
+  stage: quality
+  script:
+    - docker pull sonarsource/sonar-scanner-cli
+    - "docker run sonarsource/sonar-scanner-cli \
+      -Dsonar.projectKey=todo_front \
+      -Dsonar.sources=. \
+      -Dsonar.host.url=http://192.168.137.32 \
+      -Dsonar.login=02817322f79e03d81abb1b960449b22f23f27b22"
+  only:
+    refs:
+      - master
+    changes:
+      - package.json
+  tags: [shared]
+
+build:
+  stage: build
+  cache:
+    <<: *global_cache
+    policy: pull
+  script:
+    - if [ ! -d node_modules ] ;then npm install ;fi
+    - npm run build
+  artifacts:
+    paths:
+      - public
+  tags: [shared]
+# deploy:
+#   stage: deploy
+#   cache: {}
+#   script:
+#     - apt-get update -qq && apt-get install -y -qq sshpass
+#     - sshpass -V
+#     - export SSHPASS=$USER_PASS
+#     - sshpass -e scp -P 24700 -o stricthostkeychecking=no -r public/. root@$HOST:$PROJECT_PATH/public
+#   dependencies:
+#     - build
+#   only:
+#     - master
+#   tags: [shared]
