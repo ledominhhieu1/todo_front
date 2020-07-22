@@ -36,8 +36,6 @@ quality:
   only:
     refs:
       - master
-    changes:
-      - package.json
   tags: [shared]
 
 build:
