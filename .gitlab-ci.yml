@@ -24,6 +24,7 @@ install_dependencies:
   tags: [shared]
 
 quality:
+  image: docker:latest
   stage: quality
   script:
     - docker pull sonarsource/sonar-scanner-cli
