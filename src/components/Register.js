@@ -69,7 +69,8 @@ class Register extends React.Component {
     <Form
       name="normal_login"
       className="login-form"
-      onFinish={this.handleSubmit}
+      onFinish={this.handleSubmit}    
+      
     >
       <Form.Item
         name="username"
