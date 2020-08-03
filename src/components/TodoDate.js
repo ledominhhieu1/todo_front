@@ -1,32 +1,35 @@
 import React from "react";
-// import useDateCheck from "../hooks/useDateCheck";
-// import useReminderNotification from "../hooks/useReminderNotification";
 import styles from "./TodoDate.module.scss";
+import { format } from "date-fns";
 
 // Current date at the top of the page
 function TodoDate() {
-  // const { date } = useAppState();
+  let nd = new Date();
 
-  // useDateCheck();
-  // useReminderNotification();
+  let currentDate = {
+    day: format(nd, "dd"),
+    dayDisplay: format(nd, "d"),
+    month: format(nd, "MM"),
+    monthDisplay: format(nd, "MMM"),
+    year: format(nd, "y"),
+    weekday: format(nd, "EEEE")
+  };
+
   function handleLogOut() {
 		localStorage.clear();
 	}
   return (
     <div className={styles.date}>
       <div className={styles.calendar}>
-        <div className={styles.day}></div> 
-        {/* {date.dayDisplay} */}
+        <div className={styles.day}>{currentDate.dayDisplay}</div> 
         <div className={styles.my}>
-          <div className={styles.month}></div>
-            {/* {date.monthDisplay} */}
-          <div className={styles.year}></div>
-          {/* {date.year} */}
+          <div className={styles.month}>{currentDate.monthDisplay}</div>
+          <div className={styles.year}>{currentDate.year}</div>
         </div>
       </div>
-      <div className="today">
+      <div className="today">  
         <p><a href="/" onClick={handleLogOut}>Logout</a></p>
-        {/* {date.weekday} */}
+        {currentDate.weekday}
       </div>
     </div>
   );
