@@ -6,36 +6,21 @@ import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
-
+import { history } from '../services/history';
 class Register extends React.Component {
   constructor(props) {
     super(props);
-    this.Username = this.Username.bind(this);  
-    this.Password = this.Password.bind(this);  
-    this.Fullname = this.Fullname.bind(this);
-    this.Email = this.Email.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    
 
     this.state = {  
       username: '',
-      password: ''
-    }  
-  }  
+      password: '',
+      fullname:'',
+      email:''
 
-  Username(event) {  
-    this.setState({ Username: event.target.value })  
-  }  
 
-  Password(event) {  
-    this.setState({ Password: event.target.value })  
-  }  
-
-  Fullname(event) {  
-    this.setState({ Fullname: event.target.value })  
-  }  
-
-  Email(event) {  
-    this.setState({ Email: event.target.value })  
+    }
+    this.handleSubmit = this.handleSubmit.bind(this);
   }  
 
   handleSubmit(event) {
@@ -43,25 +28,23 @@ class Register extends React.Component {
       method: 'post',
       url: 'http://localhost:5321/user/register',
       data: {
-        username: this.state.Username,
-        password: this.state.Password,
-        fullname: this.state.Fullname,
+        username: this.state.username,
+        password: this.state.password,
+        fullname: this.state.fullname,
         email: this.state.email
       }
     }).then(response => {
           alert('Success');
-          this.setState({ redirect: true})
+          window.location.replace('/');
+
+          
       }).catch(error => {alert('Fail');});
-    this.setState({
-      username: '',
-      password: '',
-      fullname: '',
-      email: ''
-    })
   }
   
   render() {
   const {redirect} = this.state;
+
+
   if (redirect) {
     return <Redirect to='/task'/>
   }
@@ -83,7 +66,7 @@ class Register extends React.Component {
         <Input prefix={<UserOutlined className="site-form-item-icon" />} 
                placeholder="Username" 
                value={this.state.value} 
-               onChange={this.Username}
+               onChange={e => this.setState({username:e.target.value})}
         />
       </Form.Item>
       <Form.Item
@@ -100,7 +83,7 @@ class Register extends React.Component {
           type="password"
           placeholder="Password"
           value={this.state.value} 
-          onChange={this.Password}
+          onChange={e => this.setState({password:e.target.value})}
         />
       </Form.Item>
       <Form.Item
@@ -114,7 +97,7 @@ class Register extends React.Component {
       >
         <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Fullname" 
                 value={this.state.value} 
-                onChange={this.Fullname}
+                onChange={e => this.setState({fullname:e.target.value})}
         />
       </Form.Item>
       <Form.Item
@@ -128,14 +111,14 @@ class Register extends React.Component {
       >
         <Input prefix={<MailOutlined className="site-form-item-icon" /> }   placeholder="Email" 
                 value={this.state.value} 
-                onChange={this.Email}
+                onChange={e => this.setState({email:e.target.value})}
         />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
           Register
         </Button>
-        Or <a href="/login">login now!</a>
+        Or <a href="/">login now!</a>
       </Form.Item>
     </Form>
   );
