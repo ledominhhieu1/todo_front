@@ -33,8 +33,6 @@ class ListItem extends Component {
             </button>
         );
     }
-
-
     render() {
         var data = [];
         data = this.props.todotodo;
@@ -68,13 +66,7 @@ class ListItem extends Component {
                     
                 }):<></>}
 
-           
-                                
-
-
                 </div>
-              
-
             </div>
         );
     }
