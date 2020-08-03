@@ -15,9 +15,6 @@ class Item extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-
-
-
   handleChange(evt) {
     const value = evt.target.value;
     this.setState({
@@ -39,8 +36,6 @@ class Item extends Component {
     })
   }
   editItem(itemKey) {
-    // const completedItem = { ...item, isCompleted: true };
-    // dispatch({ type: "UPDATE_ITEM", item: completedItem });
     axios({
       method: 'patch',
       url: 'http://localhost:5321/task/' + itemKey,
@@ -55,8 +50,6 @@ class Item extends Component {
     })
   }
   completeItem(itemKey) {
-    // const completedItem = { ...item, isCompleted: true };
-    // dispatch({ type: "UPDATE_ITEM", item: completedItem });
     axios({
       method: 'patch',
       url: 'http://localhost:5321/task/' + itemKey,
